@@ -29,3 +29,16 @@ jobs:
 
       - name: Test
         run: cargo test --workspace
+
+      - name: Build conformance runner
+        run: |
+          cmake -S protobuf -B protobuf-build -Dprotobuf_BUILD_CONFORMANCE=ON
+          cmake --build protobuf-build --target conformance_test_runner -j
+
+      - name: Conformance tests
+        run: |
+          cargo build -p prost-canonical-serde-conformance
+          ./protobuf-build/conformance_test_runner \
+            --failure_list prost-canonical-serde-conformance/conformance/failure_list_rust_cc.txt \
+            --text_format_failure_list prost-canonical-serde-conformance/conformance/text_format_failure_list_rust_cc.txt \
+            ./target/debug/prost-canonical-serde-conformance
