@@ -568,10 +568,6 @@ fn init_field(field: &FieldInfo) -> proc_macro2::TokenStream {
     }
 }
 
-#[expect(
-    clippy::too_many_lines,
-    reason = "Expanded match arms need to stay in one place for clarity."
-)]
 fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStream> {
     let ident = &field.ident;
     let json_name = LitStr::new(&field.json_name, ident.span());
