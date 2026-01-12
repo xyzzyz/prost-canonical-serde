@@ -8,14 +8,6 @@ repository = "https://github.com/xyzzyz/prost-canonical-serde"
 readme = "README.md"
 keywords = ["protobuf", "prost", "serde", "json", "canonical"]
 categories = ["encoding", "data-structures", "parser-implementations"]
-include = [
-    "src/**",
-    "Cargo.toml",
-    "docs/**",
-    "example/**",
-    "LICENSE",
-    "README.md",
-]
 
 [lints]
 workspace = true
