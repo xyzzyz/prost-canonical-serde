@@ -1,10 +1,11 @@
 [package]
 name = "prost-canonical-serde"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "Apache-2.0"
 description = "Canonical JSON encoding for Prost-generated protobuf bindings"
 repository = "https://github.com/xyzzyz/prost-canonical-serde"
+readme = "README.md"
 keywords = ["protobuf", "prost", "serde", "json", "canonical"]
 categories = ["encoding", "data-structures", "parser-implementations"]
 
@@ -25,7 +26,7 @@ std = [
 [dependencies]
 prost = { version = "0.14", default-features = false, features = ["derive"] }
 prost-types = { version = "0.14", default-features = false }
-prost-canonical-serde-derive = { path = "../prost-canonical-serde-derive", version = "0.1.0" }
+prost-canonical-serde-derive = { path = "../prost-canonical-serde-derive", version = "0.1.1" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 base64 = { version = "0.21", default-features = false, features = ["alloc"] }
 chrono = { version = "0.4", default-features = false, features = ["alloc"] }
