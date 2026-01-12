@@ -14,18 +14,17 @@
 //!
 //! ## example.proto
 //! ```proto
-#![doc = include_str!("../example/proto/example.proto")]
+#![doc = include_str!("../docs/proto/example.proto")]
 //! ```
 //!
 //! ## build.rs
 //! ```rust,ignore
-#![doc = include_str!("../example/build.rs")]
+#![doc = include_str!("../docs/example_build.rs")]
 //! ```
 //!
 //! ## usage
 //! ```rust
-#![doc = include_str!("../example/docs/usage.rs")]
-//! # main();
+#![doc = include_str!("../docs/usage.rs")]
 //! ```
 //!
 //! The derive macros generate canonical protobuf JSON serde implementations, so

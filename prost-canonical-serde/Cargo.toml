@@ -7,6 +7,14 @@ description = "Canonical JSON encoding for Prost-generated protobuf bindings"
 repository = "https://github.com/xyzzyz/prost-canonical-serde"
 keywords = ["protobuf", "prost", "serde", "json", "canonical"]
 categories = ["encoding", "data-structures", "parser-implementations"]
+include = [
+    "src/**",
+    "Cargo.toml",
+    "docs/**",
+    "example/**",
+    "LICENSE",
+    "README.md",
+]
 
 [lints]
 workspace = true
