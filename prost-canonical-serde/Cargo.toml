@@ -8,6 +8,14 @@ repository = "https://github.com/xyzzyz/prost-canonical-serde"
 readme = "README.md"
 keywords = ["protobuf", "prost", "serde", "json", "canonical"]
 categories = ["encoding", "data-structures", "parser-implementations"]
+include = [
+    "src/**",
+    "Cargo.toml",
+    "docs/**",
+    "example/**",
+    "LICENSE",
+    "README.md",
+]
 
 [lints]
 workspace = true
@@ -34,4 +42,4 @@ libc = { version = "0.2", default-features = false, optional = true }
 
 [dev-dependencies]
 serde_json = "1"
-prost-canonical-serde-example = { path = "../prost-canonical-serde-example" }
+prost-canonical-serde-example = { path = "example" }
