@@ -1,0 +1,19 @@
+[package]
+name = "prost-canonical-serde-conformance"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+prost = { version = "0.14", default-features = false, features = ["derive", "std"] }
+prost-types = { version = "0.14", default-features = false, features = ["std"] }
+prost-canonical-serde = { path = "../prost-canonical-serde" }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
+
+[build-dependencies]
+prost-canonical-serde-build = { path = "../prost-canonical-serde-build" }
+prost-build = "0.14"

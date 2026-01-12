@@ -1,0 +1,36 @@
+[package]
+name = "prost-canonical-serde"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "Canonical JSON encoding for Prost-generated protobuf bindings"
+repository = "https://github.com/xyzzyz/prost-canonical-serde"
+keywords = ["protobuf", "prost", "serde", "json", "canonical"]
+categories = ["encoding", "data-structures", "parser-implementations"]
+
+[lints]
+workspace = true
+
+[features]
+default = ["std"]
+std = [
+    "prost/std",
+    "prost-types/std",
+    "serde/std",
+    "base64/std",
+    "chrono/std",
+    "libc",
+]
+
+[dependencies]
+prost = { version = "0.14", default-features = false, features = ["derive"] }
+prost-types = { version = "0.14", default-features = false }
+prost-canonical-serde-derive = { path = "../prost-canonical-serde-derive" }
+serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
+base64 = { version = "0.21", default-features = false, features = ["alloc"] }
+chrono = { version = "0.4", default-features = false, features = ["alloc"] }
+libc = { version = "0.2", default-features = false, optional = true }
+
+[dev-dependencies]
+serde_json = "1"
+prost-canonical-serde-example = { path = "../prost-canonical-serde-example" }

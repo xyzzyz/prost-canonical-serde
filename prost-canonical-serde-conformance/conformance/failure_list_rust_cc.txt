@@ -1,0 +1,35 @@
+Required.Proto2.ProtobufInput.MessageSetEncoding.UnknownExtension.ProtobufOutput                                   # Output was not equivalent to reference message: deleted: message_set_correct.4135300[0]: "\000c"
+Required.Proto2.ProtobufInput.UnknownOrdering.ProtobufOutput                                                       # Unknown field mismatch
+Required.Proto2.ProtobufInput.UnknownVarint.ProtobufOutput                                                         # Output was not equivalent to reference message: Expect: \250\037\001, but got:
+Required.Proto2.ProtobufInput.ValidMessageSetEncoding.OutOfOrderGroupsEntries.ProtobufOutput                       # Output was not equivalent to reference message: deleted: message_set_correct.(protobuf_test_messages.proto2.TestAllTypesProto2.MessageSetCorrectExtension2.message_set_extension): { i: 99 }
+Required.Proto2.ProtobufInput.ValidMessageSetEncoding.ProtobufOutput                                               # Output was not equivalent to reference message: deleted: message_set_correct.(protobuf_test_messages.proto2.TestAllTypesProto2.MessageSetCorrectExtension2.message_set_extension): { i: 99 }
+Required.Proto3.JsonInput.Any.JsonOutput                                                                           # Failed to parse input or produce output.
+Required.Proto3.JsonInput.Any.ProtobufOutput                                                                       # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyNested.JsonOutput                                                                     # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyNested.ProtobufOutput                                                                 # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyUnorderedTypeTag.JsonOutput                                                           # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyUnorderedTypeTag.ProtobufOutput                                                       # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithDuration.JsonOutput                                                               # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithFieldMask.JsonOutput                                                              # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithInt32ValueWrapper.JsonOutput                                                      # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithNoType.JsonOutput                                                                 # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithStruct.JsonOutput                                                                 # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithTimestamp.JsonOutput                                                              # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithValueForInteger.JsonOutput                                                        # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithValueForJsonObject.JsonOutput                                                     # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithDuration.ProtobufOutput                                                           # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithFieldMask.ProtobufOutput                                                          # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithInt32ValueWrapper.ProtobufOutput                                                  # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithNoType.ProtobufOutput                                                             # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithStruct.ProtobufOutput                                                             # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithTimestamp.ProtobufOutput                                                          # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithValueForInteger.ProtobufOutput                                                    # Failed to parse input or produce output.
+Required.Proto3.JsonInput.AnyWithValueForJsonObject.ProtobufOutput                                                 # Failed to parse input or produce output.
+Required.Proto3.JsonInput.EnumFieldWithAliasDifferentCase.JsonOutput                                               # Failed to parse input or produce output.
+Required.Proto3.JsonInput.EnumFieldWithAliasDifferentCase.ProtobufOutput                                           # Failed to parse input or produce output.
+Required.Proto3.JsonInput.EnumFieldWithAliasLowerCase.JsonOutput                                                   # Failed to parse input or produce output.
+Required.Proto3.JsonInput.EnumFieldWithAliasLowerCase.ProtobufOutput                                               # Failed to parse input or produce output.
+Required.Proto3.JsonInput.EnumFieldWithAliasUseAlias.JsonOutput                                                    # Failed to parse input or produce output.
+Required.Proto3.JsonInput.EnumFieldWithAliasUseAlias.ProtobufOutput                                                # Failed to parse input or produce output.
+Required.Proto3.ProtobufInput.UnknownOrdering.ProtobufOutput                                                       # Unknown field mismatch
+Required.Proto3.ProtobufInput.UnknownVarint.ProtobufOutput                                                         # Output was not equivalent to reference message: Expect: \250\037\001, but got:

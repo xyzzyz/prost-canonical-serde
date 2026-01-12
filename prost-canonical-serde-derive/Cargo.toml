@@ -1,0 +1,20 @@
+[package]
+name = "prost-canonical-serde-derive"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Derive macros for canonical JSON encoding of Prost-generated protobuf bindings"
+repository = "https://github.com/xyzzyz/prost-canonical-serde"
+keywords = ["protobuf", "prost", "serde", "json", "canonical"]
+categories = ["encoding", "development-tools::procedural-macro-helpers", "parser-implementations"]
+
+[lints]
+workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", features = ["full"] }

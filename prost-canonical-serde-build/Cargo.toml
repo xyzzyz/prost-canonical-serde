@@ -1,0 +1,16 @@
+[package]
+name = "prost-canonical-serde-build"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "Build helpers for canonical JSON encoding of Prost-generated protobuf bindings"
+repository = "https://github.com/xyzzyz/prost-canonical-serde"
+keywords = ["protobuf", "prost", "serde", "json", "canonical"]
+categories = ["encoding", "development-tools::build-utils", "parser-implementations"]
+
+[lints]
+workspace = true
+
+[dependencies]
+prost-build = "0.14"
+prost-types = "0.14"
