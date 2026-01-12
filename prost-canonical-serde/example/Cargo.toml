@@ -9,10 +9,10 @@ workspace = true
 
 [dependencies]
 prost = { version = "0.14", default-features = false, features = ["derive"] }
-prost-canonical-serde = { path = "../prost-canonical-serde" }
+prost-canonical-serde = { path = ".." }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 prost-types = "0.14"
 
 [build-dependencies]
 prost-build = "0.14"
-prost-canonical-serde-build = { path = "../prost-canonical-serde-build" }
+prost-canonical-serde-build = { path = "../../prost-canonical-serde-build" }
