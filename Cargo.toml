@@ -4,7 +4,7 @@ members = [
     "prost-canonical-serde-build",
     "prost-canonical-serde-conformance",
     "prost-canonical-serde-derive",
-    "prost-canonical-serde-example",
+    "prost-canonical-serde/example",
 ]
 resolver = "3"
 
