@@ -2,6 +2,7 @@ use alloc::vec::Vec;
 use core::any::TypeId;
 use core::fmt;
 use core::marker::PhantomData;
+use alloc::string::String;
 
 use prost_types::NullValue;
 use serde::{Deserialize, Deserializer, Serialize, Serializer, de};

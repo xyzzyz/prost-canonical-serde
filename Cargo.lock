@@ -249,7 +249,6 @@ version = "0.1.1"
 dependencies = [
  "base64",
  "chrono",
- "libc",
  "prost",
  "prost-canonical-serde-derive",
  "prost-canonical-serde-example",
