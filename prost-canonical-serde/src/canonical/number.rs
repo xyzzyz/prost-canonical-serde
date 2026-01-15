@@ -53,9 +53,9 @@ fn is_integral(value: f64) -> bool {
     if !value.is_finite() {
         return false;
     }
-    value % 1.0 == 0.0
     // because there's no floating point math in core, we need to do some hacky stuff
     // TODO(amichalik): simplify this once https://github.com/rust-lang/rust/issues/137578 is stabilized
+    value % 1.0 == 0.0
 }
 
 pub(crate) fn i32_from_str(value: &str) -> Result<i32, CanonicalError> {
