@@ -245,7 +245,7 @@ dependencies = [
 
 [[package]]
 name = "prost-canonical-serde"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "base64",
  "chrono",
@@ -259,7 +259,7 @@ dependencies = [
 
 [[package]]
 name = "prost-canonical-serde-build"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "prost-build",
  "prost-types",
@@ -280,7 +280,7 @@ dependencies = [
 
 [[package]]
 name = "prost-canonical-serde-derive"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "proc-macro2",
  "quote",
