@@ -49,12 +49,21 @@ pub(crate) fn parse_float(value: &str) -> Result<f64, CanonicalError> {
     }
 }
 
+fn is_integral(value: f64) -> bool {
+    if !value.is_finite() {
+        return false;
+    }
+    // because there's no floating point math in core, we need to do some hacky stuff
+    // TODO(amichalik): simplify this once https://github.com/rust-lang/rust/issues/137578 is stabilized
+    value % 1.0 == 0.0
+}
+
 pub(crate) fn i32_from_str(value: &str) -> Result<i32, CanonicalError> {
     if let Ok(parsed) = value.parse::<i32>() {
         return Ok(parsed);
     }
     let parsed = parse_float(value).map_err(|_| CanonicalError::new("invalid i32 string"))?;
-    if !parsed.is_finite() || parsed.fract() != 0.0 {
+    if !is_integral(parsed) {
         return Err(CanonicalError::new("invalid i32 string"));
     }
     if parsed < f64::from(i32::MIN) || parsed > f64::from(i32::MAX) {
@@ -107,7 +116,7 @@ pub(crate) fn f64_from_u64_exact(value: u64) -> Result<f64, CanonicalError> {
 }
 
 pub(crate) fn i32_from_f64(value: f64) -> Result<i32, CanonicalError> {
-    if !value.is_finite() || value.fract() != 0.0 {
+    if !is_integral(value) {
         return Err(CanonicalError::new("invalid i32"));
     }
     if value < f64::from(i32::MIN) || value > f64::from(i32::MAX) {
@@ -121,7 +130,7 @@ pub(crate) fn i32_from_f64(value: f64) -> Result<i32, CanonicalError> {
 }
 
 pub(crate) fn u32_from_f64(value: f64) -> Result<u32, CanonicalError> {
-    if !value.is_finite() || value.fract() != 0.0 {
+    if !is_integral(value) {
         return Err(CanonicalError::new("invalid u32"));
     }
     if value < 0.0 || value > f64::from(u32::MAX) {
@@ -165,10 +174,7 @@ pub(crate) fn i64_from_f64(value: f64) -> Result<i64, CanonicalError> {
     const MIN_SAFE_INT: f64 = -9_007_199_254_740_992.0;
     const MAX_SAFE_INT: f64 = 9_007_199_254_740_992.0;
 
-    if !value.is_finite() {
-        return Err(CanonicalError::new("invalid i64"));
-    }
-    if value.fract() != 0.0 {
+    if !is_integral(value) {
         return Err(CanonicalError::new("invalid i64"));
     }
     if !(MIN_SAFE_INT..=MAX_SAFE_INT).contains(&value) {
@@ -185,10 +191,7 @@ pub(crate) fn i64_from_f64(value: f64) -> Result<i64, CanonicalError> {
 pub(crate) fn u64_from_f64(value: f64) -> Result<u64, CanonicalError> {
     const MAX_SAFE_UINT: f64 = 18_014_398_509_481_984.0;
 
-    if !value.is_finite() {
-        return Err(CanonicalError::new("invalid u64"));
-    }
-    if value.fract() != 0.0 {
+    if !is_integral(value) {
         return Err(CanonicalError::new("invalid u64"));
     }
     if !(0.0..=MAX_SAFE_UINT).contains(&value) {
