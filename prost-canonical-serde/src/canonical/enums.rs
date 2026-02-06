@@ -1,3 +1,4 @@
+use alloc::string::String;
 use alloc::vec::Vec;
 use core::any::TypeId;
 use core::fmt;

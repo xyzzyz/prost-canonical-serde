@@ -1,5 +1,6 @@
 use alloc::collections::BTreeMap;
 use alloc::string::String;
+use alloc::string::ToString;
 use core::marker::PhantomData;
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer, de};
