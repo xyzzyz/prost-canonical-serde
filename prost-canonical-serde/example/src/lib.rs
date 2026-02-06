@@ -6,6 +6,10 @@ pub mod demo {
     include!("demo.rs");
 }
 
+pub mod conflict {
+    include!("conflict.rs");
+}
+
 #[expect(
     clippy::doc_markdown,
     clippy::module_inception,

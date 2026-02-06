@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package conflict;
+
+message NameConflicts {
+  string key = 1;
+  string value = 2;
+  int32 map = 3;
+  oneof choice {
+    string key_choice = 4;
+    int32 value_choice = 5;
+  }
+}

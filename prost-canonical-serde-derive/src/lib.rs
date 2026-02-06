@@ -18,6 +18,7 @@
 //! let json = serde_json::to_string(&Example { value: 1 }).unwrap();
 //! ```
 use proc_macro::TokenStream;
+use proc_macro2::Span;
 use quote::quote;
 use syn::{
     parse_macro_input, spanned::Spanned, Attribute, Data, DeriveInput, Fields, Ident, LitStr, Path,
@@ -110,6 +111,10 @@ fn expand_deserialize_struct(
     data: &syn::DataStruct,
 ) -> syn::Result<proc_macro2::TokenStream> {
     let name = &input.ident;
+    let map_ident = Ident::new("__pcs_map", Span::call_site());
+    let key_cow_ident = Ident::new("__pcs_key", Span::call_site());
+    let key_str_ident = Ident::new("__pcs_key_str", Span::call_site());
+    let oneof_value_ident = Ident::new("__pcs_oneof_value", Span::call_site());
     let fields = extract_fields(&data.fields)?;
     let mut field_inits = Vec::new();
     let mut field_names = Vec::new();
@@ -128,14 +133,14 @@ fn expand_deserialize_struct(
                 .ok_or_else(|| syn::Error::new(ident.span(), "oneof field must be Option"))?;
             oneof_checks.push(quote! {
                 match <#oneof_type as ::prost_canonical_serde::ProstOneof>::try_deserialize(
-                    key,
-                    &mut map,
+                    #key_str_ident,
+                    &mut #map_ident,
                 )? {
-                    ::prost_canonical_serde::OneofMatch::Matched(Some(value)) => {
+                    ::prost_canonical_serde::OneofMatch::Matched(Some(#oneof_value_ident)) => {
                         if #ident.is_some() {
                             return Err(::serde::de::Error::custom("multiple oneof fields set"));
                         }
-                        #ident = Some(value);
+                        #ident = Some(#oneof_value_ident);
                         continue;
                     }
                     ::prost_canonical_serde::OneofMatch::Matched(None) => {
@@ -145,7 +150,7 @@ fn expand_deserialize_struct(
                 }
             });
         } else {
-            match_arms.push(deserialize_match_arm(field)?);
+            match_arms.push(deserialize_match_arm(field, &map_ident)?);
         }
     }
 
@@ -164,19 +169,19 @@ fn expand_deserialize_struct(
                         formatter.write_str("map")
                     }
 
-                    fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+                    fn visit_map<A>(self, mut #map_ident: A) -> Result<Self::Value, A::Error>
                     where
                         A: ::serde::de::MapAccess<'de>,
                     {
                         #(#field_inits)*
 
-                        while let Some(key) = map.next_key::<::alloc::borrow::Cow<'de, str>>()? {
-                            let key = key.as_ref();
+                        while let Some(#key_cow_ident) = #map_ident.next_key::<::alloc::borrow::Cow<'de, str>>()? {
+                            let #key_str_ident = #key_cow_ident.as_ref();
                             #(#oneof_checks)*
-                            match key {
+                            match #key_str_ident {
                                 #(#match_arms)*
                                 _ => {
-                                    let _ = map.next_value::<::serde::de::IgnoredAny>()?;
+                                    let _ = #map_ident.next_value::<::serde::de::IgnoredAny>()?;
                                 }
                             }
                         }
@@ -284,6 +289,11 @@ fn expand_serialize_enum(
 fn expand_deserialize_enum(input: &DeriveInput, data: &syn::DataEnum) -> proc_macro2::TokenStream {
     let name = &input.ident;
     if is_oneof_enum(data) {
+        let map_ident = Ident::new("__pcs_map", Span::call_site());
+        let key_cow_ident = Ident::new("__pcs_key", Span::call_site());
+        let key_str_ident = Ident::new("__pcs_key_str", Span::call_site());
+        let value_ident = Ident::new("__pcs_value", Span::call_site());
+        let found_ident = Ident::new("__pcs_found", Span::call_site());
         return quote! {
             impl ::prost_canonical_serde::CanonicalDeserialize for #name {
                 fn deserialize_canonical<'de, D>(deserializer: D) -> Result<Self, D::Error>
@@ -299,36 +309,36 @@ fn expand_deserialize_enum(input: &DeriveInput, data: &syn::DataEnum) -> proc_ma
                             formatter.write_str("map")
                         }
 
-                        fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+                        fn visit_map<A>(self, mut #map_ident: A) -> Result<Self::Value, A::Error>
                         where
                             A: ::serde::de::MapAccess<'de>,
                         {
-                            let mut found = None;
-                            while let Some(key) = map.next_key::<::alloc::borrow::Cow<'de, str>>()? {
-                                let key = key.as_ref();
+                            let mut #found_ident = None;
+                            while let Some(#key_cow_ident) = #map_ident.next_key::<::alloc::borrow::Cow<'de, str>>()? {
+                                let #key_str_ident = #key_cow_ident.as_ref();
                                 match <#name as ::prost_canonical_serde::ProstOneof>::try_deserialize(
-                                    key,
-                                    &mut map,
+                                    #key_str_ident,
+                                    &mut #map_ident,
                                 )? {
-                                    ::prost_canonical_serde::OneofMatch::Matched(Some(value)) => {
-                                        if found.is_some() {
+                                    ::prost_canonical_serde::OneofMatch::Matched(Some(#value_ident)) => {
+                                        if #found_ident.is_some() {
                                             return Err(::serde::de::Error::custom(
                                                 "multiple oneof fields set",
                                             ));
                                         }
-                                        found = Some(value);
+                                        #found_ident = Some(#value_ident);
                                         continue;
                                     }
                                     ::prost_canonical_serde::OneofMatch::Matched(None) => {
                                         continue;
                                     }
                                     ::prost_canonical_serde::OneofMatch::NoMatch => {
-                                        let _ = map.next_value::<::serde::de::IgnoredAny>()?;
+                                        let _ = #map_ident.next_value::<::serde::de::IgnoredAny>()?;
                                     }
                                 }
                             }
 
-                            found.ok_or_else(|| ::serde::de::Error::custom("expected oneof field"))
+                            #found_ident.ok_or_else(|| ::serde::de::Error::custom("expected oneof field"))
                         }
                     }
 
@@ -568,8 +578,12 @@ fn init_field(field: &FieldInfo) -> proc_macro2::TokenStream {
     }
 }
 
-fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStream> {
+fn deserialize_match_arm(
+    field: &FieldInfo,
+    map_ident: &Ident,
+) -> syn::Result<proc_macro2::TokenStream> {
     let ident = &field.ident;
+    let value_ident = Ident::new("__pcs_value", Span::call_site());
     let json_name = LitStr::new(&field.json_name, ident.span());
     let proto_name = LitStr::new(&field.proto_name, ident.span());
     let ty = &field.ty;
@@ -589,7 +603,7 @@ fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStr
                 return Ok(quote! {
                     #match_pat => {
                         #ident = Some(
-                            map.next_value::<::prost_canonical_serde::CanonicalValue<#inner_ty>>()?
+                            #map_ident.next_value::<::prost_canonical_serde::CanonicalValue<#inner_ty>>()?
                                 .0,
                         );
                     }
@@ -598,11 +612,11 @@ fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStr
             let value_expr = if let Kind::Enum(path) = inner.as_ref() {
                 let path = field.enum_path.as_ref().unwrap_or(path);
                 quote! {
-                    map.next_value::<::prost_canonical_serde::CanonicalEnumOption<#path>>()?.0
+                    #map_ident.next_value::<::prost_canonical_serde::CanonicalEnumOption<#path>>()?.0
                 }
             } else {
                 quote! {
-                    map.next_value::<::prost_canonical_serde::CanonicalOption<#inner_ty>>()?.0
+                    #map_ident.next_value::<::prost_canonical_serde::CanonicalOption<#inner_ty>>()?.0
                 }
             };
             Ok(quote! {
@@ -615,7 +629,7 @@ fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStr
             if let Kind::Enum(path) = inner.as_ref() {
                 return Ok(quote! {
                     #match_pat => {
-                        #ident = map
+                        #ident = #map_ident
                             .next_value::<::prost_canonical_serde::CanonicalEnumVec<#path>>()?
                             .0;
                     }
@@ -627,7 +641,7 @@ fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStr
                 .ok_or_else(|| syn::Error::new(ident.span(), "missing Vec inner type"))?;
             Ok(quote! {
                 #match_pat => {
-                    #ident = map
+                    #ident = #map_ident
                         .next_value::<::prost_canonical_serde::CanonicalVec<#inner_ty>>()?
                         .0;
                 }
@@ -636,11 +650,11 @@ fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStr
         Kind::Map(_, _, value_kind) => {
             let value_expr = if let Kind::Enum(path) = value_kind.as_ref() {
                 quote! {
-                    map.next_value::<::prost_canonical_serde::CanonicalEnumMap<#path, #ty>>()?.0
+                    #map_ident.next_value::<::prost_canonical_serde::CanonicalEnumMap<#path, #ty>>()?.0
                 }
             } else {
                 quote! {
-                    map.next_value::<::prost_canonical_serde::CanonicalMap<#ty>>()?.0
+                    #map_ident.next_value::<::prost_canonical_serde::CanonicalMap<#ty>>()?.0
                 }
             };
             Ok(quote! {
@@ -653,22 +667,22 @@ fn deserialize_match_arm(field: &FieldInfo) -> syn::Result<proc_macro2::TokenStr
             let path = field.enum_path.as_ref().unwrap_or(path);
             Ok(quote! {
                 #match_pat => {
-                    if let Some(value) = map
+                    if let Some(#value_ident) = #map_ident
                         .next_value::<::prost_canonical_serde::CanonicalEnumOption<#path>>()?
                         .0
                     {
-                        #ident = value;
+                        #ident = #value_ident;
                     }
                 }
             })
         }
         _ => Ok(quote! {
             #match_pat => {
-                if let Some(value) = map
+                if let Some(#value_ident) = #map_ident
                     .next_value::<::prost_canonical_serde::CanonicalOption<#ty>>()?
                     .0
                 {
-                    #ident = value;
+                    #ident = #value_ident;
                 }
             }
         }),
