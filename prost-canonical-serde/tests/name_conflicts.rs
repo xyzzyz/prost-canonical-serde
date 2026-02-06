@@ -1,5 +1,5 @@
-use prost_canonical_serde_example::conflict::name_conflicts::Choice;
 use prost_canonical_serde_example::conflict::NameConflicts;
+use prost_canonical_serde_example::conflict::name_conflicts::Choice;
 
 #[test]
 fn name_conflicts_roundtrip() {
